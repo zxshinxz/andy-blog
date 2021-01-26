@@ -5,7 +5,7 @@ import React from 'react';
 import {jsx, ThemeProvider, css, useTheme} from '@emotion/react'
 
 const baseCss = css`
-  .storybook-button {
+  &.storybook-button {
     font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 700;
     border: 0;
@@ -14,24 +14,24 @@ const baseCss = css`
     display: inline-block;
     line-height: 1;
   }
-  .storybook-button--primary {
+  &.storybook-button--primary {
     color: white;
     background-color: #1ea7fd;
   }
-  .storybook-button--secondary {
+  &.storybook-button--secondary {
     color: #333;
     background-color: transparent;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;
+    box-shadow: rgba(0, 0, 0, 0&.15) 0px 0px 0px 1px inset;
   }
-  .storybook-button--small {
+  &.storybook-button--small {
     font-size: 12px;
     padding: 10px 16px;
   }
-  .storybook-button--medium {
+  &.storybook-button--medium {
     font-size: 14px;
     padding: 11px 20px;
   }
-  .storybook-button--large {
+  &.storybook-button--large {
     font-size: 16px;
     padding: 12px 24px;
   }
@@ -64,13 +64,16 @@ export interface ButtonProps {
 /**
  * Primary UI component for user interaction
  */
-export const Button: React.FC<ButtonProps> = ({
-                                                  primary = false,
-                                                  size = 'medium',
-                                                  backgroundColor,
-                                                  label,
-                                                  ...props
-                                              }) => {
+export const Button = ({
+                           primary = false,
+                           size = 'medium',
+                           backgroundColor,
+                           label,
+                           ...props
+                       }: ButtonProps) => {
+
+
+
     const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
     return (
         <button
@@ -83,4 +86,8 @@ export const Button: React.FC<ButtonProps> = ({
             {label}
         </button>
     );
+};
+
+Button.defaultProps = {
+    label: 'test'
 };

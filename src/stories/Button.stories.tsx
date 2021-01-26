@@ -1,18 +1,24 @@
 import React from 'react';
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
-import { Story, Meta } from '@storybook/react/types-6-0';
+import {Story, Meta} from '@storybook/react/types-6-0';
 
-import { Button, ButtonProps } from './Button';
+import {Button, ButtonProps} from './Button';
+import {theme} from "./Theme";
+import {ThemeProvider} from "@emotion/react";
 
 export default {
   title: 'Example/Button',
   component: Button,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  // argTypes: {
+  //     backgroundColor: {control: 'color'},
+  // },
 } as Meta;
 
-const Template: Story<ButtonProps> = (args) => <Button {...args} />;
+const Template: Story<ButtonProps> = (args) => (
+    <ThemeProvider theme={theme}>
+      <Button {...args} />
+    </ThemeProvider>
+);
 
 export const Primary = Template.bind({});
 Primary.args = {

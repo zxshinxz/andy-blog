@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {BlogDetail} from "./components/BlogDetail/BlogDetail";
+import {Header} from "./components/Header/Header";
+import {Menu, SideNav} from "./components/SideNav/SideNav";
+import {List} from "./components/List/List";
+import {Write} from "./components/Write/Write";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    let menus: Menu[] = [
+        {
+            label: "게시글 리스트",
+            component: <List></List>
+        },
+        {
+            label: "상세 페이지",
+            component: <BlogDetail></BlogDetail>
+        },
+        {
+            label: "글쓰기",
+            component: <Write></Write>
+        }
+    ]
+
+
+    return (
+        <div className="App" style={{"height": "100%"}}>
+            <SideNav menus={menus}>
+                <Header imageUrl={"https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1603852170/noticon/iwbd31aaoxcxh1ololsi.png"}></Header>
+            </SideNav>
+        </div>
+    );
 }
 
 export default App;
