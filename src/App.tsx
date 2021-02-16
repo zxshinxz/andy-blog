@@ -10,18 +10,22 @@ function App() {
 
     let menus: Menu[] = [
         {
+            path: "/post",
+            exact: true,
             label: "게시글 리스트",
-            component: <List></List>
+            component: () => <List></List>
         },
         {
+            path: "/post/:postId",
             label: "상세 페이지",
-            component: <BlogDetail></BlogDetail>
+            component: () => <BlogDetail></BlogDetail>
         },
         {
+            path: "/write",
             label: "글쓰기",
-            component: <Write></Write>
+            component: () => <Write></Write>
         }
-    ]
+    ];
 
 
     return (

@@ -4,6 +4,14 @@ import React, {useEffect, useState} from 'react';
 /** @jsx jsx */
 import {jsx, css} from '@emotion/react'
 
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+    Link
+} from "react-router-dom";
+
 function style() {
     return css`
       display: flex;
@@ -32,8 +40,10 @@ function style() {
 }
 
 export interface Menu {
+    path: string,
+    exact?: boolean,
     label: string,
-    component: JSX.Element
+    component: () => JSX.Element
 }
 
 export interface SideNavProps {
@@ -49,30 +59,42 @@ export const SideNav = (props: SideNavProps) => {
     // }, [selectedMenuIndex])
 
     return (
-        <div className="SideNav"
-             css={style()}>
-            <div id={"sideNav"}>
-                <img src={"https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1603679690/noticon/g16oddfpbk4wci2ec7nr.gif"}></img>
-                {
-                    props.menus.map((menu: Menu, idx: number) => {
-                        return <div key={idx}
-                                    onClick={() => {
-                                        setSelectedMenuIndex(idx)
-                                    }}
-                                    className={"sideNavMenu"}
-                        >
-                            {menu.label}
-                        </div>
-                    })
-                }
-            </div>
-            <div id={"content"}>
-                {props.children}
-                <div className={"main-content"}>
-                    {props.menus[selectedMenuIndex].component}
+        <Router>
+            <div className="SideNav"
+                 css={style()}>
+                <div id={"sideNav"}>
+                    <img src={"https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1603679690/noticon/g16oddfpbk4wci2ec7nr.gif"}></img>
+                    {
+                        props.menus.map((menu: Menu, idx: number) => {
+                            return <div key={idx}
+                                        className={"sideNavMenu"}
+                            >
+                                <Link to={menu.path}>{menu.label}</Link>
+
+                            </div>
+                        })
+                    }
+                </div>
+                <div id={"content"}>
+                    {props.children}
+                    <Switch>
+                        <Route exact path="/">
+                            <Redirect to={props.menus[0].path} />
+                        </Route>
+                        {props.menus.map((route, index) => (
+                            // Render more <Route>s with the same paths as
+                            // above, but different components this time.
+                            <Route
+                                key={index}
+                                path={route.path}
+                                exact={route.exact}
+                                children={<route.component />}
+                            />
+                        ))}
+                    </Switch>
                 </div>
             </div>
-        </div>
+        </Router>
     );
 }
 
