@@ -58,6 +58,8 @@ export const SideNav = (props: SideNavProps) => {
     // useEffect(() => {
     // }, [selectedMenuIndex])
 
+    const pubUrl = process.env.PUBLIC_URL;
+
     return (
         <Router>
             <div className="SideNav"
@@ -67,10 +69,8 @@ export const SideNav = (props: SideNavProps) => {
                     {
                         props.menus.map((menu: Menu, idx: number) => {
                             return <div key={idx}
-                                        className={"sideNavMenu"}
-                            >
-                                <Link to={menu.path}>{menu.label}</Link>
-
+                                        className={"sideNavMenu"}>
+                                <Link to={pubUrl + menu.path}>{menu.label}</Link>
                             </div>
                         })
                     }
@@ -78,15 +78,18 @@ export const SideNav = (props: SideNavProps) => {
                 <div id={"content"}>
                     {props.children}
                     <Switch>
-                        <Route exact path="/">
-                            <Redirect to={props.menus[0].path} />
+                        <Route exact path={["/", pubUrl]}>
+                            <Redirect to={pubUrl + props.menus[0].path} />
+                        </Route>
+                        <Route exact path="/andy-blog">
+                            <Redirect to={pubUrl + props.menus[0].path} />
                         </Route>
                         {props.menus.map((route, index) => (
                             // Render more <Route>s with the same paths as
                             // above, but different components this time.
                             <Route
                                 key={index}
-                                path={route.path}
+                                path={pubUrl + route.path}
                                 exact={route.exact}
                                 children={<route.component />}
                             />
