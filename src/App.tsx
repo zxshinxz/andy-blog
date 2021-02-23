@@ -5,6 +5,9 @@ import {Header} from "./components/Header/Header";
 import {Menu, SideNav} from "./components/SideNav/SideNav";
 import {List} from "./components/List/List";
 import {Write} from "./components/Write/Write";
+import {AndyProvider} from "./services/api";
+import {PostServiceMock} from "./services/post.service.mock";
+import {CommentServiceMock} from "./services/comment.service.mock";
 
 function App() {
 
@@ -16,24 +19,33 @@ function App() {
             component: () => <List></List>
         },
         {
-            path: "/post/:postId",
-            label: "상세 페이지",
-            component: () => <BlogDetail></BlogDetail>
-        },
-        {
-            path: "/write",
+            path: "/new",
             label: "글쓰기",
             component: () => <Write></Write>
+        },
+        {
+            path: "/post/:postId",
+            label: "상세 페이지",
+            component: () => <BlogDetail></BlogDetail>,
+            hidden: true
+        },
+        {
+            path: "/update/:postId",
+            label: "글쓰기",
+            component: () => <Write></Write>,
+            hidden: true
         }
     ];
 
 
     return (
-        <div className="App" style={{"height": "100%"}}>
-            <SideNav menus={menus}>
-                <Header imageUrl={"https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1603852170/noticon/iwbd31aaoxcxh1ololsi.png"}></Header>
-            </SideNav>
-        </div>
+        <AndyProvider andy={{post: PostServiceMock, comment: CommentServiceMock}}>
+            <div className="App" style={{"height": "100%"}}>
+                <SideNav menus={menus}>
+                    <Header imageUrl={"https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1603852170/noticon/iwbd31aaoxcxh1ololsi.png"}></Header>
+                </SideNav>
+            </div>
+        </AndyProvider>
     );
 }
 
