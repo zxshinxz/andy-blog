@@ -39,13 +39,13 @@
     "react-intersection-observer": "8.31.0",
     "react-query": "^3.8.2",
     "react-responsive-carousel": "3.2.11",
+    "react-router-dom": "5.2.0",
     "react-scroll": "^1.8.1",
     "react-slick": "0.27.13",
     "react-sticky-el": "^2.0.5",
     "react-swipeable-views": "0.13.9",
     "react-virtualized": "9.22.3",
     "react-waypoint": "^9.0.3",
-    "react-router-dom": "5.2.0",
     "web-vitals": "0.2.4"
   },
   "scripts": {
@@ -66,6 +66,7 @@
     ],
     "extends": [
       "airbnb",
+      "plugin:@typescript-eslint/recommended",
       "plugin:react/recommended",
       "plugin:jsx-a11y/recommended",
       "plugin:import/errors",
@@ -81,12 +82,31 @@
       "node": true
     },
     "parser": "@typescript-eslint/parser",
+
     "parserOptions": {
       "project": "./tsconfig.json"
     },
     "rules": {
-      "no-use-before-define": "off",
-      "prettier/prettier": "error",
+      "@typescript-eslint/explicit-function-return-type": [
+        0,
+        {
+          "allowTypedFunctionExpressions": true,
+          "allowExpressions": true
+        }
+      ],
+      "no-else-return": [
+        "error",
+        {
+          "allowElseIf": true
+        }
+      ],
+      "default-case": 0,
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        }
+      ],
       "import/extensions": [
         "error",
         "ignorePackages",
@@ -119,6 +139,7 @@
       "@typescript-eslint/no-use-before-define": [
         "error"
       ],
+      "no-use-before-define": "off",
       "react/no-unused-prop-types": "off",
       "react/jsx-key": "off",
       "jsx-a11y/click-events-have-key-events": "off",
@@ -168,6 +189,7 @@
     "@storybook/node-logger": "6.1.11",
     "@storybook/preset-create-react-app": "3.1.5",
     "@storybook/theming": "^6.1.17",
+    "@types/react-router-dom": "5.1.7",
     "@types/react-slick": "0.23.4",
     "@typescript-eslint/eslint-plugin": "4.14.1",
     "@typescript-eslint/parser": "4.14.1",
@@ -185,12 +207,10 @@
     "eslint-plugin-prettier": "3.3.1",
     "eslint-plugin-react": "7.22.0",
     "eslint-plugin-react-hooks": "4.2.0",
-    "prettier": "2.2.1",
+    "prettier": "^2.2.1",
     "prettier-eslint": "12.0.0",
     "prettier-eslint-cli": "5.0.0",
     "react-scripts": "4.0.0-next.117",
-    "@types/react-router-dom": "5.1.7",
     "typescript": "4.0.3"
-
   }
 }

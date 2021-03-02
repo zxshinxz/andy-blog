@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAndy } from '../../services/api';
-import { AndyService, Post, PostService } from '../../object-model/model';
-import { AsyncEffectState, PromiseFn, useAsyncEffect } from '../../services/async';
+import { AndyService, Post } from '../../object-model/model';
+import { useAsyncEffect } from '../../services/async';
 
-export const BlogDetail = () => {
+interface ParamTypes {
+  postId: string;
+}
+
+export const BlogDetail = (): ReactElement => {
   const andy: AndyService = useAndy();
-  const params: any = useParams();
+  const { postId } = useParams<ParamTypes>();
+  const postIdNumber: number = parseInt(postId, 10);
 
-  const asyncEffectState: AsyncEffectState<Post | undefined, Error, PromiseFn<Post | undefined>> = useAsyncEffect(
+  const asyncEffectState = useAsyncEffect<Post | undefined, Error, (id: number) => Promise<Post | undefined>>(
     andy.post.getPost,
-    [parseInt(params.postId)],
-    [],
+    [postIdNumber],
   );
 
   if (asyncEffectState.state.loading) return <div>Loading...</div>;

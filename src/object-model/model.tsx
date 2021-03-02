@@ -15,6 +15,8 @@ export interface Post {
   updatedAt: string;
 }
 
+// declare function GP(id: number) => Promise<Post | undefined>
+
 export interface PostService {
   getPosts: () => Promise<Post[]>;
   getPost: (id: number) => Promise<Post | undefined>;

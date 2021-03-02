@@ -1,3 +1,4 @@
+/* eslint-disable */
 import _ from 'lodash';
 import { Post } from '../object-model/model';
 
@@ -107,7 +108,7 @@ export const PostServiceMock = {
     });
 
     if (foundIndex !== -1) {
-      posts.splice(foundIndex, 1);
+      posts.splice(Number(foundIndex), 1);
       return Promise.resolve(1);
     }
     return Promise.resolve(0);

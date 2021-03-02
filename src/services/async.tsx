@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { Reducer, useEffect, useReducer } from 'react';
 
 type LoadingAction = {
   type: 'LOADING';
@@ -22,13 +22,19 @@ export type AsyncState<D, E> = {
   error: E | null;
 };
 
-export type AsyncEffectState<D, E, F> = {
+export type AsyncEffectState<D, E, F extends AnyFunction> = {
   state: AsyncState<D, E>;
-  run: (...params: []) => void;
+  run: (params: Parameters<F>) => Promise<void>;
 };
 
 function asyncReducer<D, E>(state: AsyncState<D, E>, action: AsyncAction<D, E>): AsyncState<D, E> {
   switch (action.type) {
+    default:
+      return {
+        loading: false,
+        data: null,
+        error: null,
+      };
     case 'LOADING':
       return {
         loading: true,
@@ -50,16 +56,16 @@ function asyncReducer<D, E>(state: AsyncState<D, E>, action: AsyncAction<D, E>):
   }
 }
 
-export type PromiseFn<T> = (...args: T[]) => Promise<T>;
+type AnyFunction = (...args: any) => Promise<any>;
 
-function useAsync<D, E, F extends PromiseFn<D>>(promiseFn: F, deps = []) {
-  const [state, dispatch] = useReducer(asyncReducer, {
+function useAsync<D, E, F extends AnyFunction>(promiseFn: F): AsyncEffectState<D, E, F> {
+  const [state, dispatch] = useReducer<Reducer<AsyncState<D, E>, AsyncAction<D, E>>>(asyncReducer, {
     loading: false,
     data: null,
     error: null,
-  } as AsyncState<D, E>);
+  });
 
-  async function run(...params: Parameters<F>) {
+  async function run(params: Parameters<F>) {
     dispatch({ type: 'LOADING' });
     try {
       const data = await promiseFn(...params);
@@ -75,23 +81,20 @@ function useAsync<D, E, F extends PromiseFn<D>>(promiseFn: F, deps = []) {
     }
   }
 
-  return [state, run] as const;
+  return { state, run };
 }
 
-function useAsyncEffect<D, E, F extends PromiseFn<D>>(promiseFn: F, params: Parameters<F>, deps: []) {
-  const [state, run] = useAsync<D, E, F>(promiseFn);
-  useEffect(
-    () => {
-      run(...params);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    deps,
-  );
+function useAsyncEffect<D, E, F extends AnyFunction>(promiseFn: F, params: Parameters<F>): AsyncEffectState<D, E, F> {
+  const { state, run } = useAsync<D, E, F>(promiseFn);
+
+  useEffect(() => {
+    run(params);
+  }, []);
 
   return {
     state,
     run,
-  } as AsyncEffectState<D, E, F>;
+  };
 }
 
 export default useAsync;

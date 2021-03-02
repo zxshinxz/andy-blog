@@ -1,4 +1,4 @@
-import { Comment, Post } from '../object-model/model';
+import { Comment } from '../object-model/model';
 
 const comments: Comment[] = [
   {
@@ -60,22 +60,22 @@ const comments: Comment[] = [
 ];
 
 export const CommentServiceMock = {
-  getComments: () => {
+  getComments: (): Promise<Comment[]> => {
     return Promise.resolve(comments);
   },
-  getComment: (id: number) => {
+  getComment: (id: number): Promise<Comment | undefined> => {
     const foundComment: Comment | undefined = comments.find((comment: Comment) => {
       return comment.id === id;
     });
     return Promise.resolve(foundComment);
   },
-  writeComment: (comment: Comment) => {
+  writeComment: (): Promise<number> => {
     return Promise.resolve(1);
   },
-  updateComment: (id: number, comment: Comment) => {
+  updateComment: (): Promise<number> => {
     return Promise.resolve(1);
   },
-  deleteComment: (id: number) => {
+  deleteComment: (): Promise<number> => {
     return Promise.resolve(1);
   },
 };
